@@ -3,153 +3,399 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Portfolio</title>
+<title>이가이 포트폴리오</title>
 <link rel="stylesheet" href="portfolio.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  /* ── 비밀번호 모달 ── */
-  #pw-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 1100;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(4px);
-  }
-  #pw-modal.open { display: flex; }
+/* ── 상단 네비바 ── */
+#navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  background: rgba(247,244,239,0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #E5E0D8;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 2rem;
+  gap: 0.8rem;
+  z-index: 500;
+}
+.nav-user-info {
+  font-size: 12px;
+  color: #888;
+  font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: 0.05em;
+}
+.nav-user-info span { color: #C4703F; font-weight: 500; }
+.nav-btn {
+  background: none;
+  border: 1px solid #E5E0D8;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+.nav-btn:hover { border-color: #C4703F; color: #C4703F; }
+.nav-btn.primary {
+  background: #1a1a1a;
+  color: white;
+  border-color: #1a1a1a;
+}
+.nav-btn.primary:hover { background: #C4703F; border-color: #C4703F; }
 
-  .pw-box {
-    background: #fff;
-    border-radius: 12px;
-    padding: 2.2rem 2.4rem 2rem;
-    width: 100%;
-    max-width: 340px;
-    text-align: center;
-    animation: fadeIn 0.2s ease;
-  }
+/* ── 자동 슬라이드 섹션 ── */
+#recent-section {
+  padding: 5rem 0 4rem;
+  overflow: hidden;
+  background: #fff;
+  border-top: 1px solid #E5E0D8;
+  border-bottom: 1px solid #E5E0D8;
+}
+.recent-header {
+  padding: 0 6vw;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.recent-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(24px, 2.5vw, 34px);
+  font-weight: 300;
+  font-style: italic;
+}
+.recent-header p { font-size: 12px; color: #888; letter-spacing: 0.1em; }
 
-  .pw-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 400;
-    color: #1a1a1a;
-    margin-bottom: 0.4rem;
-  }
+.slider-track-wrap { position: relative; }
+.slider-track {
+  display: flex;
+  gap: 20px;
+  padding: 0 6vw;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.slide-card {
+  flex: 0 0 300px;
+  background: #F7F4EF;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #E5E0D8;
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.slide-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+.slide-img { aspect-ratio: 4/3; overflow: hidden; background: #e8e2da; }
+.slide-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.slide-card:hover .slide-img img { transform: scale(1.04); }
+.slide-body { padding: 0.9rem 1.1rem 1.1rem; }
+.slide-date { font-size: 11px; color: #888; margin-bottom: 0.3rem; letter-spacing: 0.08em; }
+.slide-title { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 400; }
 
-  .pw-sub {
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 1.4rem;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: 300;
-  }
+/* 슬라이드 도트 */
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 1.8rem;
+}
+.slider-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #D5CDBF;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+}
+.slider-dot.active { background: #C4703F; width: 20px; border-radius: 3px; }
 
-  .pw-input {
-    width: 100%;
-    border: 1.5px solid #E5E0D8;
-    border-radius: 8px;
-    padding: 11px 14px;
-    font-size: 20px;
-    text-align: center;
-    letter-spacing: 0.4em;
-    font-family: 'Noto Sans KR', sans-serif;
-    outline: none;
-    transition: border-color 0.2s;
-    box-sizing: border-box;
-  }
-  .pw-input:focus { border-color: #C4703F; }
+/* ── 로그인 모달 ── */
+#auth-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1100;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+#auth-modal.open { display: flex; }
+.auth-box {
+  background: #fff;
+  border-radius: 14px;
+  padding: 2.4rem 2.6rem 2.2rem;
+  width: 100%;
+  max-width: 360px;
+  animation: fadeIn 0.22s ease;
+}
+.auth-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 0.3rem;
+}
+.auth-sub {
+  font-size: 13px;
+  color: #888;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  margin-bottom: 1.6rem;
+  line-height: 1.6;
+}
+.auth-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #E5E0D8;
+}
+.auth-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 8px 0;
+  font-size: 13px;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  color: #888;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.2s;
+}
+.auth-tab.active { color: #C4703F; border-bottom-color: #C4703F; }
+.auth-field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.auth-field label { font-size: 11px; color: #888; letter-spacing: 0.1em; text-transform: uppercase; }
+.auth-field input {
+  border: 1.5px solid #E5E0D8;
+  border-radius: 8px;
+  padding: 10px 13px;
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.2s;
+  background: #F7F4EF;
+}
+.auth-field input:focus { border-color: #C4703F; }
+.auth-error { font-size: 12px; color: #e53e3e; min-height: 18px; margin-top: 0.2rem; }
+.auth-submit {
+  width: 100%;
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  padding: 11px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  margin-top: 0.4rem;
+  transition: background 0.2s;
+}
+.auth-submit:hover { background: #C4703F; }
+.auth-close {
+  position: absolute;
+  top: 0; right: 0;
+  transform: translate(-1.2rem, 1.2rem);
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #888;
+  cursor: pointer;
+}
+.auth-box { position: relative; }
 
-  .pw-error {
-    font-size: 12px;
-    color: #e53e3e;
-    margin: 0.6rem 0 0;
-    min-height: 18px;
-    font-family: 'Noto Sans KR', sans-serif;
-  }
+/* ── 비밀번호 변경 모달 ── */
+#changepw-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1100;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+#changepw-modal.open { display: flex; }
 
-  .pw-actions {
-    display: flex;
-    gap: 0.7rem;
-    margin-top: 1.4rem;
-    justify-content: center;
-  }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
 
-  @keyframes shake {
-    0%,100% { transform: translateX(0); }
-    20%      { transform: translateX(-8px); }
-    40%      { transform: translateX(8px); }
-    60%      { transform: translateX(-5px); }
-    80%      { transform: translateX(5px); }
-  }
-  .pw-box.shake { animation: shake 0.35s ease; }
+/* ── 수정 모달 ── */
+#edit-modal {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 1050;
+  align-items: center; justify-content: center;
+  padding: 2rem; backdrop-filter: blur(4px);
+}
+#edit-modal.open { display: flex; }
+.card-edit {
+  display: none; position: absolute; top: 8px; right: 42px;
+  background: rgba(0,0,0,0.55); color: white; border: none;
+  border-radius: 50%; width: 28px; height: 28px; font-size: 13px;
+  cursor: pointer; align-items: center; justify-content: center;
+  z-index: 10; transition: background 0.2s;
+}
+.card-edit:hover { background: #C4703F; }
+body.admin-mode .card-edit { display: flex; }
 
-  /* ── 수정 모달 ── */
-  #edit-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 1050;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    backdrop-filter: blur(4px);
-  }
-  #edit-modal.open { display: flex; }
+/* ── 라이트박스 확장 (좋아요+댓글) ── */
+.lb-actions {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid #E5E0D8;
+}
+.lb-like-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid #E5E0D8;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #555;
+}
+.lb-like-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+.lb-like-btn.liked { background: #fff0f0; border-color: #e74c3c; color: #e74c3c; }
+.lb-like-btn.liked .like-heart { animation: heartPop 0.3s ease; }
+.like-count { font-size: 12px; }
 
-  .card-edit {
-    display: none;
-    position: absolute;
-    top: 8px;
-    right: 42px;
-    background: rgba(0,0,0,0.55);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    font-size: 13px;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    transition: background 0.2s;
-  }
-  .card-edit:hover { background: #C4703F; }
-  body.admin-mode .card-edit { display: flex; }
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
 
-  /* ── 로딩 ── */
-  #loading-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(247,244,239,0.85);
-    z-index: 2000;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  #loading-overlay.show { display: flex; }
-  .loading-spinner {
-    width: 36px; height: 36px;
-    border: 3px solid #E5E0D8;
-    border-top-color: #C4703F;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
-  .loading-text {
-    font-size: 13px;
-    color: #888;
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+.lb-comments-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-height: 0;
+}
+.lb-comments-title { font-size: 12px; color: #888; letter-spacing: 0.1em; text-transform: uppercase; }
+.lb-comments-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-height: 200px;
+  padding-right: 4px;
+}
+.lb-comments-list::-webkit-scrollbar { width: 3px; }
+.lb-comments-list::-webkit-scrollbar-thumb { background: #E5E0D8; border-radius: 2px; }
+
+.comment-item {
+  background: #F7F4EF;
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+}
+.comment-email { font-size: 11px; color: #C4703F; margin-bottom: 0.2rem; font-weight: 500; }
+.comment-text { font-size: 13px; color: #444; line-height: 1.6; }
+.comment-time { font-size: 10px; color: #bbb; margin-top: 0.2rem; }
+
+.comment-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.comment-input {
+  flex: 1;
+  border: 1px solid #E5E0D8;
+  border-radius: 8px;
+  padding: 8px 11px;
+  font-size: 13px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  outline: none;
+  background: #F7F4EF;
+  transition: border-color 0.2s;
+}
+.comment-input:focus { border-color: #C4703F; }
+.comment-submit {
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.comment-submit:hover { background: #C4703F; }
+.comment-login-prompt {
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+  padding: 0.8rem;
+  background: #F7F4EF;
+  border-radius: 8px;
+}
+.comment-login-prompt button {
+  color: #C4703F;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  text-decoration: underline;
+}
+
+/* ── 로딩 ── */
+#loading-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(247,244,239,0.85); z-index: 2000;
+  align-items: center; justify-content: center;
+  flex-direction: column; gap: 1rem;
+}
+#loading-overlay.show { display: flex; }
+.loading-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid #E5E0D8;
+  border-top-color: #C4703F;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+.loading-text { font-size: 13px; color: #888; font-family: 'Noto Sans KR', sans-serif; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* hero 위 여백 (네비바) */
+#hero { margin-top: 56px; }
 </style>
 </head>
 <body>
+
+<!-- ── 네비바 ── -->
+<nav id="navbar">
+  <div class="nav-user-info" id="nav-user-info" style="display:none"></div>
+  <button class="nav-btn" id="btn-login" onclick="openAuthModal('login')" style="display:none">로그인</button>
+  <button class="nav-btn" id="btn-signup" onclick="openAuthModal('signup')" style="display:none">회원가입</button>
+  <button class="nav-btn" id="btn-changepw" onclick="openChangePw()" style="display:none">비밀번호 변경</button>
+  <button class="nav-btn" id="btn-logout" onclick="doLogout()" style="display:none">로그아웃</button>
+</nav>
 
 <!-- ── 로딩 오버레이 ── -->
 <div id="loading-overlay">
@@ -175,6 +421,18 @@
     <span>Scroll</span>
     <div class="scroll-line"></div>
   </div>
+</section>
+
+<!-- ── 최근 작품 자동 슬라이드 ── -->
+<section id="recent-section">
+  <div class="recent-header">
+    <h2>Recent Works</h2>
+    <p id="slide-counter">— / —</p>
+  </div>
+  <div class="slider-track-wrap">
+    <div class="slider-track" id="slider-track"></div>
+  </div>
+  <div class="slider-dots" id="slider-dots"></div>
 </section>
 
 <!-- ── GALLERY ── -->
@@ -239,7 +497,7 @@
   </div>
 </section>
 
-<!-- ── LIGHTBOX ── -->
+<!-- ── LIGHTBOX (좋아요 + 댓글 추가) ── -->
 <div id="lightbox" onclick="closeLightbox(event)">
   <button class="lb-close" onclick="closeLightbox(null, true)">×</button>
   <div class="lb-inner">
@@ -248,6 +506,21 @@
       <p class="lb-date" id="lb-date"></p>
       <h2 class="lb-title" id="lb-title"></h2>
       <p class="lb-desc" id="lb-desc"></p>
+
+      <!-- 좋아요 -->
+      <div class="lb-actions">
+        <button class="lb-like-btn" id="lb-like-btn" onclick="toggleLike()">
+          <span class="like-heart">♥</span>
+          <span class="like-count" id="lb-like-count">0</span>
+        </button>
+      </div>
+
+      <!-- 댓글 -->
+      <div class="lb-comments-section">
+        <p class="lb-comments-title">댓글</p>
+        <div class="lb-comments-list" id="lb-comments-list"></div>
+        <div id="comment-input-area"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -316,45 +589,85 @@
   </div>
 </div>
 
-<!-- ── PASSWORD MODAL ── -->
-<div id="pw-modal" onclick="closePwModal(event)">
-  <div class="pw-box" id="pw-box">
-    <p class="pw-title">관리자 인증</p>
-    <p class="pw-sub">비밀번호를 입력하세요</p>
-    <input type="password" id="pw-input" class="pw-input" placeholder="••••" maxlength="20"
-      onkeydown="if(event.key==='Enter') confirmPw()">
-    <p class="pw-error" id="pw-error"></p>
-    <div class="pw-actions">
-      <button class="btn-cancel" onclick="closePwModal(null, true)">취소</button>
-      <button class="btn-submit" onclick="confirmPw()">확인</button>
+<!-- ── AUTH MODAL ── -->
+<div id="auth-modal" onclick="closeAuthModal(event)">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuthModal(null, true)">×</button>
+    <h2 class="auth-title" id="auth-modal-title">로그인</h2>
+    <p class="auth-sub" id="auth-modal-sub">계정으로 로그인해 좋아요와 댓글을 남겨보세요</p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">로그인</button>
+      <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">회원가입</button>
     </div>
+    <div class="auth-field">
+      <label>이메일</label>
+      <input type="email" id="auth-email" placeholder="your@email.com">
+    </div>
+    <div class="auth-field">
+      <label>비밀번호</label>
+      <input type="password" id="auth-password" placeholder="••••••••"
+        onkeydown="if(event.key==='Enter') submitAuth()">
+    </div>
+    <p class="auth-error" id="auth-error"></p>
+    <button class="auth-submit" onclick="submitAuth()" id="auth-submit-btn">로그인</button>
   </div>
 </div>
 
-<!-- Admin toggle -->
-<button class="admin-toggle" id="admin-btn" onclick="toggleAdmin()">관리자</button>
+<!-- ── 비밀번호 변경 모달 ── -->
+<div id="changepw-modal" onclick="closeChangePw(event)">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeChangePw(null, true)">×</button>
+    <h2 class="auth-title">비밀번호 변경</h2>
+    <p class="auth-sub">새 비밀번호를 입력하세요</p>
+    <div class="auth-field">
+      <label>새 비밀번호</label>
+      <input type="password" id="new-pw1" placeholder="새 비밀번호 (6자 이상)"
+        onkeydown="if(event.key==='Enter') submitChangePw()">
+    </div>
+    <div class="auth-field">
+      <label>새 비밀번호 확인</label>
+      <input type="password" id="new-pw2" placeholder="한 번 더 입력"
+        onkeydown="if(event.key==='Enter') submitChangePw()">
+    </div>
+    <p class="auth-error" id="changepw-error"></p>
+    <button class="auth-submit" onclick="submitChangePw()">변경하기</button>
+  </div>
+</div>
 
 <!-- ── Supabase SDK ── -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  // ══════════════════════════════════════════
-  //  Supabase 설정
-  // ══════════════════════════════════════════
+  // ════════════════════════════════════════════
+  //  Supabase 설정 (본인 키로 유지)
+  // ════════════════════════════════════════════
   const SUPABASE_URL = 'https://oadehjunmzagnxeqdcqs.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_kJT7qsiS_qRAHEyWt5_TzA_DhXuaUXX';
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // ══════════════════════════════════════════
+  // 관리자 아이디: banana / 비밀번호: 1234
+  // Supabase에 banana@admin.local 로 등록된 계정
+  const ADMIN_EMAIL = 'banana@admin.local';
+
+  // ════════════════════════════════════════════
   //  State
-  // ══════════════════════════════════════════
-  let works = [];
+  // ════════════════════════════════════════════
+  let works       = [];
   let currentMode = 'full';
   let currentGrid = 3;
-  let isAdmin = false;
-  let fileData = null;      // 업로드용 (File 객체)
-  let editFileData = null;  // 수정용 (File 객체)
-  let editIndex = -1;
+  let isAdmin     = false;
+  let fileData    = null;
+  let editFileData = null;
+  let editIndex   = -1;
+  let currentUser = null;
+  let currentWork = null;  // 라이트박스에 열린 작품
+  let userLikes   = new Set(); // 현재 유저가 좋아요한 work id 목록
+
+  // 슬라이드 상태
+  let slideIndex    = 0;
+  let slideTimer    = null;
+  let slideTotal    = 0;
+  const SLIDE_INTERVAL = 3500;
 
   // ── 로딩 표시 ──────────────────────────────
   function showLoading(msg = '저장 중...') {
@@ -365,9 +678,267 @@
     document.getElementById('loading-overlay').classList.remove('show');
   }
 
-  // ══════════════════════════════════════════
-  //  Supabase 데이터 불러오기
-  // ══════════════════════════════════════════
+  // ════════════════════════════════════════════
+  //  Auth 상태 초기화
+  // ════════════════════════════════════════════
+  async function initAuth() {
+    const { data: { session } } = await sb.auth.getSession();
+    currentUser = session?.user ?? null;
+    isAdmin = !!(currentUser && currentUser.email === ADMIN_EMAIL);
+    if (isAdmin) document.body.classList.add('admin-mode');
+    updateNavbar();
+    if (currentUser) await loadUserLikes();
+  }
+
+  function updateNavbar() {
+    const userInfo    = document.getElementById('nav-user-info');
+    const btnLogin    = document.getElementById('btn-login');
+    const btnSignup   = document.getElementById('btn-signup');
+    const btnChangepw = document.getElementById('btn-changepw');
+    const btnLogout   = document.getElementById('btn-logout');
+
+    if (currentUser) {
+      const label = isAdmin ? `<span>👑 관리자</span>` : `<span>${currentUser.email}</span> 님`;
+      userInfo.style.display = 'block';
+      userInfo.innerHTML = label;
+      btnLogin.style.display    = 'none';
+      btnSignup.style.display   = 'none';
+      btnChangepw.style.display = 'block';
+      btnLogout.style.display   = 'block';
+    } else {
+      userInfo.style.display    = 'none';
+      btnLogin.style.display    = 'block';
+      btnSignup.style.display   = 'block';
+      btnChangepw.style.display = 'none';
+      btnLogout.style.display   = 'none';
+    }
+  }
+
+  // ── 로그아웃 ────────────────────────────────
+  async function doLogout() {
+    await sb.auth.signOut();
+    currentUser = null;
+    isAdmin = false;
+    document.body.classList.remove('admin-mode');
+    userLikes.clear();
+    updateNavbar();
+  }
+
+  // ════════════════════════════════════════════
+  //  Auth 모달
+  // ════════════════════════════════════════════
+  let authMode = 'login';
+
+  function openAuthModal(mode = 'login') {
+    authMode = mode;
+    document.getElementById('auth-error').textContent = '';
+    document.getElementById('auth-email').value = '';
+    document.getElementById('auth-password').value = '';
+    switchAuthTab(mode);
+    document.getElementById('auth-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('auth-email').focus(), 120);
+  }
+
+  function closeAuthModal(e, force) {
+    if (!force && e && e.target !== document.getElementById('auth-modal')) return;
+    document.getElementById('auth-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function switchAuthTab(mode) {
+    authMode = mode;
+    document.getElementById('tab-login').classList.toggle('active', mode === 'login');
+    document.getElementById('tab-signup').classList.toggle('active', mode === 'signup');
+    document.getElementById('auth-submit-btn').textContent = mode === 'login' ? '로그인' : '회원가입';
+    document.getElementById('auth-modal-title').textContent = mode === 'login' ? '로그인' : '회원가입';
+    document.getElementById('auth-error').textContent = '';
+  }
+
+  async function submitAuth() {
+    const email = document.getElementById('auth-email').value.trim();
+    const pw    = document.getElementById('auth-password').value;
+    const errEl = document.getElementById('auth-error');
+    errEl.textContent = '';
+
+    if (!email || !pw) { errEl.textContent = '이메일과 비밀번호를 입력해주세요.'; return; }
+
+    let result;
+    if (authMode === 'login') {
+      result = await sb.auth.signInWithPassword({ email, password: pw });
+    } else {
+      result = await sb.auth.signUp({ email, password: pw });
+    }
+
+    if (result.error) {
+      const msg = result.error.message;
+      if (msg.includes('Invalid login')) errEl.textContent = '이메일 또는 비밀번호가 틀렸습니다.';
+      else if (msg.includes('already registered')) errEl.textContent = '이미 등록된 이메일입니다.';
+      else errEl.textContent = msg;
+      return;
+    }
+
+    currentUser = result.data.user;
+    if (authMode === 'signup' && !result.data.session) {
+      errEl.style.color = '#27ae60';
+      errEl.textContent = '인증 메일을 확인해주세요!';
+      return;
+    }
+
+    // 관리자 자동 판별
+    isAdmin = !!(currentUser && currentUser.email === ADMIN_EMAIL);
+    if (isAdmin) document.body.classList.add('admin-mode');
+    else document.body.classList.remove('admin-mode');
+
+    await loadUserLikes();
+    updateNavbar();
+    closeAuthModal(null, true);
+
+    // 라이트박스가 열려있으면 댓글/좋아요 UI 갱신
+    if (currentWork) {
+      renderLikeBtn();
+      renderCommentInputArea();
+    }
+  }
+
+  // ════════════════════════════════════════════
+  //  좋아요
+  // ════════════════════════════════════════════
+  async function loadUserLikes() {
+    if (!currentUser) return;
+    const { data } = await sb.from('likes').select('work_id').eq('user_id', currentUser.id);
+    userLikes = new Set((data || []).map(r => r.work_id));
+  }
+
+  async function loadLikeCount(workId) {
+    const { count } = await sb.from('likes').select('*', { count: 'exact', head: true }).eq('work_id', workId);
+    return count || 0;
+  }
+
+  async function toggleLike() {
+    if (!currentUser) { openAuthModal('login'); return; }
+    if (!currentWork) return;
+
+    const workId = currentWork.id;
+    if (userLikes.has(workId)) {
+      // 좋아요 취소
+      await sb.from('likes').delete().eq('work_id', workId).eq('user_id', currentUser.id);
+      userLikes.delete(workId);
+    } else {
+      // 좋아요 추가
+      await sb.from('likes').insert({ work_id: workId, user_id: currentUser.id });
+      userLikes.add(workId);
+    }
+    const count = await loadLikeCount(workId);
+    document.getElementById('lb-like-count').textContent = count;
+    renderLikeBtn();
+
+    // 카드의 좋아요 수도 즉시 갱신
+    const idx = works.findIndex(w => w.id === workId);
+    if (idx !== -1) {
+      works[idx].likeCount = count;
+      updateCardStat(workId, 'like', count);
+    }
+  }
+
+  function renderLikeBtn() {
+    if (!currentWork) return;
+    const btn = document.getElementById('lb-like-btn');
+    const liked = currentUser && userLikes.has(currentWork.id);
+    btn.classList.toggle('liked', !!liked);
+  }
+
+  // ════════════════════════════════════════════
+  //  댓글
+  // ════════════════════════════════════════════
+  async function loadComments(workId) {
+    const { data } = await sb.from('comments')
+      .select('*')
+      .eq('work_id', workId)
+      .order('created_at', { ascending: true });
+    return data || [];
+  }
+
+  function renderComments(comments) {
+    const list = document.getElementById('lb-comments-list');
+    if (comments.length === 0) {
+      list.innerHTML = '<p style="font-size:12px;color:#bbb;text-align:center;padding:1rem 0">아직 댓글이 없습니다</p>';
+      return;
+    }
+    list.innerHTML = comments.map(c => {
+      const time = new Date(c.created_at).toLocaleDateString('ko-KR', { month:'long', day:'numeric' });
+      return `<div class="comment-item">
+        <p class="comment-email">${c.user_email || '익명'}</p>
+        <p class="comment-text">${escHtml(c.content)}</p>
+        <p class="comment-time">${time}</p>
+      </div>`;
+    }).join('');
+  }
+
+  function renderCommentInputArea() {
+    const area = document.getElementById('comment-input-area');
+    if (currentUser) {
+      area.innerHTML = `
+        <div class="comment-form">
+          <input class="comment-input" id="comment-text" placeholder="댓글을 남겨보세요..."
+            onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); submitComment(); }">
+          <button class="comment-submit" onclick="submitComment()">등록</button>
+        </div>`;
+    } else {
+      area.innerHTML = `
+        <div class="comment-login-prompt">
+          <button onclick="openAuthModal('login')">로그인</button>하면 댓글을 달 수 있어요
+        </div>`;
+    }
+  }
+
+  async function submitComment() {
+    if (!currentUser || !currentWork) return;
+    const input = document.getElementById('comment-text');
+    const content = input.value.trim();
+    if (!content) return;
+
+    const { error } = await sb.from('comments').insert({
+      work_id: currentWork.id,
+      user_id: currentUser.id,
+      user_email: currentUser.email,
+      content
+    });
+    if (error) { alert('댓글 등록 실패: ' + error.message); return; }
+    input.value = '';
+    const comments = await loadComments(currentWork.id);
+    renderComments(comments);
+
+    // 카드의 댓글 수도 즉시 갱신
+    const idx = works.findIndex(w => w.id === currentWork.id);
+    if (idx !== -1) {
+      works[idx].commentCount = comments.length;
+      updateCardStat(currentWork.id, 'comment', comments.length);
+    }
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // 카드의 좋아요/댓글 수 DOM 즉시 갱신
+  function updateCardStat(workId, type, count) {
+    const cards = document.querySelectorAll('#gallery-grid .card');
+    const idx   = works.findIndex(w => w.id === workId);
+    if (idx === -1 || !cards[idx]) return;
+    const stats = cards[idx].querySelectorAll('.card-stat');
+    // stats[0] = 좋아요, stats[1] = 댓글
+    const target = type === 'like' ? stats[0] : stats[1];
+    if (!target) return;
+    // 숫자 텍스트만 교체 (svg는 유지)
+    const svg = target.querySelector('svg');
+    target.textContent = count;
+    if (svg) target.prepend(svg);
+  }
+
+  // ════════════════════════════════════════════
+  //  Works 데이터 불러오기
+  // ════════════════════════════════════════════
   async function loadWorks() {
     const { data, error } = await sb
       .from('works')
@@ -376,12 +947,40 @@
 
     if (error) { console.error(error); return; }
     works = data;
+
+    // 좋아요·댓글 수 병렬로 불러오기
+    await loadWorkCounts();
+
     render();
+    initSlider();
   }
 
-  // ══════════════════════════════════════════
-  //  이미지 → Supabase Storage 업로드
-  // ══════════════════════════════════════════
+  // work별 좋아요·댓글 카운트를 works 배열에 붙임
+  async function loadWorkCounts() {
+    if (!works.length) return;
+
+    const ids = works.map(w => w.id);
+
+    const [{ data: likeRows }, { data: commentRows }] = await Promise.all([
+      sb.from('likes').select('work_id').in('work_id', ids),
+      sb.from('comments').select('work_id').in('work_id', ids)
+    ]);
+
+    const likeMap    = {};
+    const commentMap = {};
+    (likeRows    || []).forEach(r => { likeMap[r.work_id]    = (likeMap[r.work_id]    || 0) + 1; });
+    (commentRows || []).forEach(r => { commentMap[r.work_id] = (commentMap[r.work_id] || 0) + 1; });
+
+    works = works.map(w => ({
+      ...w,
+      likeCount:    likeMap[w.id]    || 0,
+      commentCount: commentMap[w.id] || 0
+    }));
+  }
+
+  // ════════════════════════════════════════════
+  //  이미지 업로드
+  // ════════════════════════════════════════════
   async function uploadImage(file) {
     const ext  = file.name.split('.').pop();
     const path = `${Date.now()}.${ext}`;
@@ -391,9 +990,9 @@
     return data.publicUrl;
   }
 
-  // ══════════════════════════════════════════
-  //  Render
-  // ══════════════════════════════════════════
+  // ════════════════════════════════════════════
+  //  갤러리 렌더
+  // ════════════════════════════════════════════
   function render() {
     const grid = document.getElementById('gallery-grid');
     grid.innerHTML = '';
@@ -401,7 +1000,7 @@
     if (works.length === 0) {
       grid.innerHTML = `<div class="empty-state">
         <div class="empty-icon">🖼</div>
-        <p>아직 업로드된 작품이 없습니다.<br>우측 하단 버튼으로 관리자 모드를 켜고 작품을 올려보세요.</p>
+        <p>아직 업로드된 작품이 없습니다.</p>
       </div>`;
       return;
     }
@@ -419,6 +1018,20 @@
           <p class="card-date">${w.date}</p>
           <h3 class="card-title">${w.title}</h3>
           <p class="card-desc">${w.desc || ''}</p>
+          <div class="card-stats">
+            <span class="card-stat">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M8 13.5S1.5 9.5 1.5 5.5a3.5 3.5 0 0 1 6.5-1.8A3.5 3.5 0 0 1 14.5 5.5C14.5 9.5 8 13.5 8 13.5z"/>
+              </svg>
+              ${w.likeCount || 0}
+            </span>
+            <span class="card-stat">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M2 3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H5l-3 2V3z"/>
+              </svg>
+              ${w.commentCount || 0}
+            </span>
+          </div>
         </div>`;
       card.querySelector('.card-img-wrap img').addEventListener('click', () => openLightbox(w));
       grid.appendChild(card);
@@ -433,9 +1046,80 @@
     });
   }
 
-  // ══════════════════════════════════════════
+  // ════════════════════════════════════════════
+  //  자동 슬라이드
+  // ════════════════════════════════════════════
+  function initSlider() {
+    const track = document.getElementById('slider-track');
+    const dots  = document.getElementById('slider-dots');
+    const counter = document.getElementById('slide-counter');
+
+    // 최근 8개만 슬라이드에 표시
+    const recent = works.slice(0, 8);
+    slideTotal = recent.length;
+
+    if (slideTotal === 0) {
+      document.getElementById('recent-section').style.display = 'none';
+      return;
+    }
+    document.getElementById('recent-section').style.display = '';
+
+    track.innerHTML = recent.map((w, i) => `
+      <div class="slide-card" onclick="openLightbox(works[${works.indexOf(w)}])">
+        <div class="slide-img">
+          <img src="${w.img_url}" alt="${w.title}" loading="lazy">
+        </div>
+        <div class="slide-body">
+          <p class="slide-date">${w.date}</p>
+          <p class="slide-title">${w.title}</p>
+        </div>
+      </div>
+    `).join('');
+
+    dots.innerHTML = recent.map((_, i) =>
+      `<button class="slider-dot${i === 0 ? ' active' : ''}" onclick="goToSlide(${i})"></button>`
+    ).join('');
+
+    slideIndex = 0;
+    updateSlide();
+    startSlideTimer();
+  }
+
+  function updateSlide() {
+    const track = document.getElementById('slider-track');
+    const cardWidth = 320; // 300px + 20px gap
+    const offset = slideIndex * cardWidth;
+    track.style.transform = `translateX(-${offset}px)`;
+
+    document.getElementById('slide-counter').textContent = `${slideIndex + 1} / ${slideTotal}`;
+
+    document.querySelectorAll('.slider-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === slideIndex);
+    });
+  }
+
+  function goToSlide(i) {
+    slideIndex = i;
+    updateSlide();
+    restartSlideTimer();
+  }
+
+  function startSlideTimer() {
+    clearInterval(slideTimer);
+    slideTimer = setInterval(() => {
+      slideIndex = (slideIndex + 1) % slideTotal;
+      updateSlide();
+    }, SLIDE_INTERVAL);
+  }
+
+  function restartSlideTimer() {
+    clearInterval(slideTimer);
+    startSlideTimer();
+  }
+
+  // ════════════════════════════════════════════
   //  Layout controls
-  // ══════════════════════════════════════════
+  // ════════════════════════════════════════════
   function setMode(mode) {
     currentMode = mode;
     const grid = document.getElementById('gallery-grid');
@@ -453,28 +1137,41 @@
     [1,2,3].forEach(x => document.getElementById('btn-size-'+x).classList.toggle('active', x === n));
   }
 
-  // ══════════════════════════════════════════
+  // ════════════════════════════════════════════
   //  Lightbox
-  // ══════════════════════════════════════════
-  function openLightbox(w) {
+  // ════════════════════════════════════════════
+  async function openLightbox(w) {
+    currentWork = w;
     document.getElementById('lb-img-el').src = w.img_url;
     document.getElementById('lb-title').textContent = w.title;
     document.getElementById('lb-date').textContent = w.date;
     document.getElementById('lb-desc').textContent = w.desc || '';
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
+
+    // 좋아요 카운트
+    const count = await loadLikeCount(w.id);
+    document.getElementById('lb-like-count').textContent = count;
+    renderLikeBtn();
+
+    // 댓글 로드
+    const comments = await loadComments(w.id);
+    renderComments(comments);
+    renderCommentInputArea();
   }
 
   function closeLightbox(e, force) {
     if (!force && e && e.target !== document.getElementById('lightbox')) return;
     document.getElementById('lightbox').classList.remove('open');
     document.body.style.overflow = '';
+    currentWork = null;
   }
 
-  // ══════════════════════════════════════════
-  //  Upload (새 작품)
-  // ══════════════════════════════════════════
+  // ════════════════════════════════════════════
+  //  Upload (관리자 전용)
+  // ════════════════════════════════════════════
   function openUpload() {
+    if (!isAdmin) { alert('관리자만 업로드할 수 있습니다.'); return; }
     document.getElementById('upload-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -508,8 +1205,8 @@
 
   async function submitWork() {
     const title = document.getElementById('input-title').value.trim();
-    if (!fileData)  { alert('이미지를 선택해주세요.'); return; }
-    if (!title)     { alert('제목을 입력해주세요.'); return; }
+    if (!fileData) { alert('이미지를 선택해주세요.'); return; }
+    if (!title)    { alert('제목을 입력해주세요.'); return; }
 
     showLoading('업로드 중...');
     try {
@@ -530,20 +1227,19 @@
     }
   }
 
-  // ══════════════════════════════════════════
-  //  Delete
-  // ══════════════════════════════════════════
+  // ════════════════════════════════════════════
+  //  Delete (관리자 전용)
+  // ════════════════════════════════════════════
   async function deleteWork(e, i) {
     e.stopPropagation();
+    if (!isAdmin) return;
     if (!confirm('이 작품을 삭제할까요?')) return;
 
     showLoading('삭제 중...');
     try {
       const w = works[i];
-      // Storage 이미지 삭제
       const path = w.img_url.split('/images/')[1];
       await sb.storage.from('images').remove([path]);
-      // DB 삭제
       const { error } = await sb.from('works').delete().eq('id', w.id);
       if (error) throw error;
       await loadWorks();
@@ -554,11 +1250,12 @@
     }
   }
 
-  // ══════════════════════════════════════════
-  //  Edit (수정)
-  // ══════════════════════════════════════════
+  // ════════════════════════════════════════════
+  //  Edit (관리자 전용)
+  // ════════════════════════════════════════════
   function openEdit(e, i) {
     e.stopPropagation();
+    if (!isAdmin) return;
     editIndex = i;
     editFileData = null;
     const w = works[i];
@@ -600,17 +1297,11 @@
     showLoading('수정 중...');
     try {
       const w = works[editIndex];
-      const updates = {
-        title,
-        desc: document.getElementById('edit-desc').value.trim()
-      };
+      const updates = { title, desc: document.getElementById('edit-desc').value.trim() };
 
-      // 새 이미지가 있으면 교체
       if (editFileData) {
-        // 기존 이미지 삭제
         const oldPath = w.img_url.split('/images/')[1];
         await sb.storage.from('images').remove([oldPath]);
-        // 새 이미지 업로드
         updates.img_url = await uploadImage(editFileData);
       }
 
@@ -626,60 +1317,50 @@
     }
   }
 
-  // ══════════════════════════════════════════
-  //  Admin + Password
-  // ══════════════════════════════════════════
-  const ADMIN_PW = '1234';
-
-  function toggleAdmin() {
-    if (isAdmin) {
-      isAdmin = false;
-      document.body.classList.remove('admin-mode');
-      document.getElementById('admin-btn').classList.remove('active');
-      document.getElementById('admin-btn').textContent = '관리자';
-    } else {
-      openPwModal();
-    }
-  }
-
-  function openPwModal() {
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-error').textContent = '';
-    document.getElementById('pw-modal').classList.add('open');
+  // ════════════════════════════════════════════
+  //  비밀번호 변경
+  // ════════════════════════════════════════════
+  function openChangePw() {
+    document.getElementById('new-pw1').value = '';
+    document.getElementById('new-pw2').value = '';
+    document.getElementById('changepw-error').textContent = '';
+    document.getElementById('changepw-error').style.color = '#e53e3e';
+    document.getElementById('changepw-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
-    setTimeout(() => document.getElementById('pw-input').focus(), 120);
+    setTimeout(() => document.getElementById('new-pw1').focus(), 120);
   }
 
-  function closePwModal(e, force) {
-    if (!force && e && e.target !== document.getElementById('pw-modal')) return;
-    document.getElementById('pw-modal').classList.remove('open');
+  function closeChangePw(e, force) {
+    if (!force && e && e.target !== document.getElementById('changepw-modal')) return;
+    document.getElementById('changepw-modal').classList.remove('open');
     document.body.style.overflow = '';
   }
 
-  function confirmPw() {
-    const val = document.getElementById('pw-input').value;
-    if (val === ADMIN_PW) {
-      isAdmin = true;
-      document.body.classList.add('admin-mode');
-      document.getElementById('admin-btn').classList.add('active');
-      document.getElementById('admin-btn').textContent = '뷰어 모드';
-      closePwModal(null, true);
-    } else {
-      document.getElementById('pw-error').textContent = '비밀번호가 틀렸습니다.';
-      document.getElementById('pw-input').value = '';
-      document.getElementById('pw-input').focus();
-      const box = document.getElementById('pw-box');
-      box.classList.remove('shake');
-      void box.offsetWidth;
-      box.classList.add('shake');
-    }
+  async function submitChangePw() {
+    const pw1 = document.getElementById('new-pw1').value;
+    const pw2 = document.getElementById('new-pw2').value;
+    const errEl = document.getElementById('changepw-error');
+    errEl.style.color = '#e53e3e';
+    errEl.textContent = '';
+
+    if (!pw1 || !pw2) { errEl.textContent = '비밀번호를 입력해주세요.'; return; }
+    if (pw1.length < 6) { errEl.textContent = '비밀번호는 6자 이상이어야 합니다.'; return; }
+    if (pw1 !== pw2) { errEl.textContent = '비밀번호가 일치하지 않습니다.'; return; }
+
+    const { error } = await sb.auth.updateUser({ password: pw1 });
+    if (error) { errEl.textContent = '변경 실패: ' + error.message; return; }
+
+    errEl.style.color = '#27ae60';
+    errEl.textContent = '비밀번호가 변경되었습니다!';
+    setTimeout(() => closeChangePw(null, true), 1400);
   }
 
-  // ══════════════════════════════════════════
+  // ════════════════════════════════════════════
   //  Drag & drop
-  // ══════════════════════════════════════════
+  // ════════════════════════════════════════════
   function setupDrop(zoneId, onFile) {
     const zone = document.getElementById(zoneId);
+    if (!zone) return;
     zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
     zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
     zone.addEventListener('drop', e => {
@@ -709,18 +1390,24 @@
     reader.readAsDataURL(file);
   });
 
-  // ── ESC ────────────────────────────────────
+  // ── ESC ──────────────────────────────────────
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeLightbox(null, true);
       closeUpload(null, true);
       closeEdit(null, true);
-      closePwModal(null, true);
+      closeChangePw(null, true);
+      closeAuthModal(null, true);
     }
   });
 
-  // ── 초기 로드 ───────────────────────────────
-  loadWorks();
+  // ── 초기화 ─────────────────────────────────
+  (async () => {
+    showLoading('불러오는 중...');
+    await initAuth();
+    await loadWorks();
+    hideLoading();
+  })();
 </script>
 </body>
 </html>
