@@ -1,5 +1,4 @@
-
-  :root {
+:root {
     --bg: #F7F4EF;
     --text: #1a1a1a;
     --sub: #888;
@@ -284,6 +283,28 @@
     margin-bottom: 0.5rem;
   }
 
+  .card-stats {
+    display: flex;
+    gap: 0.9rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--sub);
+  }
+
+  .card-stat svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+  }
+
   .card-desc {
     font-size: 13px;
     color: #666;
@@ -517,27 +538,6 @@
     50% { opacity: 1; transform: scaleY(1.1); }
   }
 
-  /* Admin toggle (subtle) */
-  .admin-toggle {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: var(--text);
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 30px;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: opacity 0.2s;
-    z-index: 100;
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-
-  .admin-toggle:hover { opacity: 0.9; }
-  .admin-toggle.active { background: var(--accent); opacity: 0.9; }
 
   /* Decorative line on hero */
   .hero-rule {
